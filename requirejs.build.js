@@ -43,7 +43,7 @@
    //    }
    // ],
 
-   name: "main"
+   name: "main",
    //The directory path to save the output. If not specified, then
    //the path will default to be a directory called "build" as a sibling
    //to the build file. All relative paths are relative to the build file.

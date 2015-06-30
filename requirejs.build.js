@@ -24,7 +24,7 @@
    //or require.config({}) call found in that file will be used.
    //As of 2.1.10, mainConfigFile can be an array of values, with the last
    //value's config take precedence over previous values in the array.
-   mainConfigFile: './dist/main.js',
+   mainConfigFile: './dist/config.js',
    // modules: [
    //    //Just specifying a module name means that module will be converted into
    //    //a built file that contains all of its dependencies. If that module or any
@@ -47,7 +47,7 @@
    //The directory path to save the output. If not specified, then
    //the path will default to be a directory called "build" as a sibling
    //to the build file. All relative paths are relative to the build file.
-   out: "./dist/tmp",
+   out: "main-build.js",
 
 
    //Introduced in 2.1.11. As part of fixing a bug to prevent possible

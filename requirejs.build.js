@@ -6,13 +6,13 @@
    //then all the files from the app directory will be copied to the dir:
    //output area, and baseUrl will assume to be a relative path under
    //this directory.
-   //appDir: "dist/",
+   appDir: "dist/",
 
    //By default, all modules are located relative to this path. If baseUrl
    //is not explicitly set, then all modules are loaded relative to
    //the directory that holds the build file. If appDir is set, then
    //baseUrl should be specified as relative to the appDir.
-   baseUrl: "./dist",
+   //baseUrl: ".",
 
    //By default all the configuration for optimization happens from the command
    //line or by properties in the config file, and configuration that was
@@ -24,30 +24,15 @@
    //or require.config({}) call found in that file will be used.
    //As of 2.1.10, mainConfigFile can be an array of values, with the last
    //value's config take precedence over previous values in the array.
-   mainConfigFile: './dist/config.js',
-   // modules: [
-   //    //Just specifying a module name means that module will be converted into
-   //    //a built file that contains all of its dependencies. If that module or any
-   //    //of its dependencies includes i18n bundles, they may not be included in the
-   //    //built file unless the locale: section is set above.
-   //    {
-   //       name: "main",
-   //
-   //       //create: true can be used to create the module layer at the given
-   //       //name, if it does not already exist in the source location. If
-   //       //there is a module at the source location with this name, then
-   //       //create: true is superfluous.
-   //       create: true,
-   //       out: 'main-optimization-build.js'
-   //
-   //    }
-   // ],
+   mainConfigFile: 'dist/config.js',
+   modules: [
+      {name: "main"}
+   ],
 
-   name: "main",
    //The directory path to save the output. If not specified, then
    //the path will default to be a directory called "build" as a sibling
    //to the build file. All relative paths are relative to the build file.
-   out: "main-build.js",
+   dir: "./dist/build",
 
 
    //Introduced in 2.1.11. As part of fixing a bug to prevent possible

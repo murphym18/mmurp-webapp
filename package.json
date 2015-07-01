@@ -2,16 +2,15 @@
   "name": "mmurp.co",
   "version": "0.1.0",
   "devDependencies": {
-    "backbone": "^1.2.1",
-    "bootstrap": "^3.3.5",
+
     "del": "^1.2.0",
     "gulp": "^3.9.0",
     "gulp-babel": "^5.1.0",
     "gulp-preprocess": "^1.2.0",
     "gulp-rjs": "^0.1.0",
-    "jquery": "^2.1.4",
-    "requirejs": "^2.1.18",
-    "underscore": "^1.8.3"
+    "main-bower-files": "^2.8.2",
+    "requirejs": "^2.1.18"
+
   },
   "scripts": {},
   "gulp": {

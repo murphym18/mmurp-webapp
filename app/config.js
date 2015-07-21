@@ -1,6 +1,6 @@
 var requirejs = require('requirejs');
 
-//@ifndef TEST_PRE
+//@ifdef TEST_PRE
 console.log('macro was defined');
 //@endif
 

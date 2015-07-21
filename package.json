@@ -11,19 +11,43 @@
       "gulp-rjs": "^0.1.0",
       "gulp-ruby-sass": "^1.0.5",
       "main-bower-files": "^2.8.2",
-      "requirejs": "^2.1.18"
+      "requirejs": "^2.1.18",
+      "handlebars": "^3.0.3"
    },
    "scripts": {},
    "gulp": {
-      "bowerDir": "./bower_components",
-      "sassPath": "./app/sass",
-      "babel": {
+      "out-directory": "bin",
+      "babel-src-globs": [
+         "app/**/*.js"
+      ],
+      "babel-config": {
          "modules": "amd",
          "stage": 0,
          "ignore": "app/config.js"
       },
-      "defines": {
-         "TEST_PRE": true
+      "preprocessor-config": {
+         "context": {
+            "TEST_PRE": true
+         }
+      },
+      "sass-src-globs": [
+         "app/sass/index.sass"
+      ],
+      "sass-config": {
+         "style": "compressed",
+         "loadPath": [
+            "app/sass",
+            "bower_components/bootstrap-sass-official/assets/stylesheets",
+            "bower_components/fontawesome/scss"
+         ]
+      },
+      "requirejs-config": {
+         "name": "main",
+         "allowSourceOverwrites": true,
+         "keepBuildDir": true,
+         "optimize": "none",
+         "mainConfigFile": "config.js",
+         "out": "build.js"
       }
    },
    "dependencies": {},

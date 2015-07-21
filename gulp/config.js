@@ -2,7 +2,7 @@ var path =  require('path');
 module.exports = {
   "app-directory": path.resolve(__dirname, '../app'),
   "tmp-directory": path.resolve(__dirname, "../tmp"),
-  "out-directory": path.resolve(__dirname, "../dist"),
+  "out-directory": path.resolve(__dirname, "../out"),
   "babel-src-globs": [
     "app/**/*.js"
   ],

@@ -1,3 +1,7 @@
+require('./config');
+require('./tasks/sass');
+require('./tasks/clean');
+
 var watchify = require('watchify');
 var browserify = require('browserify');
 var gulp = require('gulp');
@@ -6,7 +10,7 @@ var buffer = require('vinyl-buffer');
 var gutil = require('gulp-util');
 var sourcemaps = require('gulp-sourcemaps');
 var uglify = require('./tasks/uglify');
-require('./tasks/clean');
+
 
 
 // add custom browserify options here

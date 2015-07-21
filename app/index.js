@@ -1,6 +1,9 @@
 import "babelify/polyfill";
-import Router from "./router";
+import "jquery";
+import "bootstrap-sass";
 import Backbone from 'backbone';
+import Router from "./router";
+
 
 console.log('Router = ', Router);
 

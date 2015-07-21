@@ -1,7 +1,7 @@
-require('./config');
 require('./tasks/sass');
 require('./tasks/clean');
-
+var config = require('./config');
+var outdir = config['out-directory'];
 var watchify = require('watchify');
 var browserify = require('browserify');
 var gulp = require('gulp');
@@ -57,5 +57,5 @@ function bundle() {
       // Add transformation tasks to the pipeline here.
 
    .pipe(sourcemaps.write('./')) // writes .map file
-      .pipe(gulp.dest('./dist'));
+      .pipe(gulp.dest(outdir));
 }

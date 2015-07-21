@@ -5,8 +5,8 @@ var source = require('vinyl-source-stream');
 var buffer = require('vinyl-buffer');
 var gutil = require('gulp-util');
 var sourcemaps = require('gulp-sourcemaps');
-var uglify = require('./uglify');
-require('./clean');
+var uglify = require('./tasks/uglify');
+require('./tasks/clean');
 
 
 // add custom browserify options here

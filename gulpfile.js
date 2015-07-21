@@ -13,16 +13,16 @@ var rjs = require("gulp-rjs");
 var sass = require('gulp-ruby-sass') ;
 var shell = require('gulp-shell');
 
-gulp.task('default', ['build-js', 'copy-libs'])
+gulp.task('default', ['build', 'copy-libs'])
 
-gulp.task('build-js', function() {
+gulp.task('build', function() {
    return gulp.src(config['babel-src-globs'])
       .pipe(preprocess(config['preprocessor-config']))
       .pipe(babel(config['babel-config']))
-      .pipe(gulp.dest(config['out-directory']));
+      .pipe(gulp.dest(config['bin-directory']));
 });
 
-gulp.task('build-css', function() { 
+gulp.task('compile-sass', function() { 
    var errCb = function(error) { 
       return "Error: " + error.message; 
    }
@@ -41,15 +41,21 @@ gulp.task('copy-fonts', function() { 
 });
 
 gulp.task('copy-libs', function() {
-   return gulp.src(mainBowerFiles())
-      .pipe(gulp.dest(config['out-directory']))
+   var regex = /\.js$/
+   var options = {
+      filter: function(name) {
+         return regex.test(String(name).toLowerCase());
+      }
+   };
+   return gulp.src(mainBowerFiles(options))
+      .pipe(gulp.dest(path.join(config['bin-directory'], '.')))
 });
 
-gulp.task('bundle-amd', ['build-js', 'copy-libs'], function(cb) {
+gulp.task('package', ['build', 'copy-libs'], function(cb) {
    var rjsConfig = config['requirejs-config'];
    var configTemplate = handlebars.compile(JSON.stringify(rjsConfig));
    var configStr = '(' + configTemplate(config) + ')'
-   var configFile = path.join('.', config['out-directory'], 'requirejs-config.js');
+   var configFile = path.join('.', config['bin-directory'], 'requirejs-config.js');
    var rjs = path.normalize('./node_modules/requirejs/bin/r.js');
 
    fs.writeFileSync(configFile, configStr);
@@ -62,5 +68,5 @@ gulp.task('bundle-amd', ['build-js', 'copy-libs'], function(cb) {
 });
 
 gulp.task('clean', function(cb) {
-   del([config['out-directory']], cb)
+   del([config['out-directory'], config['bin-directory']], cb)
 });

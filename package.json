@@ -16,8 +16,9 @@
       "handlebars": "^3.0.3"
    },
    "scripts": {},
+   "private": true,
    "gulp": {
-      "bin-directory": "bin",
+      "tmp-directory": "bin",
       "out-directory": "out",
       "babel-src-globs": [
          "app/**/*.js"

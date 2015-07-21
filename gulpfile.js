@@ -14,15 +14,16 @@ var sass = require('gulp-ruby-sass') ;
 var shell = require('gulp-shell');
 
 gulp.task('default', ['build', 'copy-libs'])
+gulp.task('build', ['build-js', 'build-css'])
 
-gulp.task('build', function() {
+gulp.task('build-js', function() {
    return gulp.src(config['babel-src-globs'])
       .pipe(preprocess(config['preprocessor-config']))
       .pipe(babel(config['babel-config']))
-      .pipe(gulp.dest(config['bin-directory']));
+      .pipe(gulp.dest(config['tmp-directory']));
 });
 
-gulp.task('compile-sass', function() { 
+gulp.task('build-css', function() { 
    var errCb = function(error) { 
       return "Error: " + error.message; 
    }
@@ -48,14 +49,14 @@ gulp.task('copy-libs', function() {
       }
    };
    return gulp.src(mainBowerFiles(options))
-      .pipe(gulp.dest(path.join(config['bin-directory'], '.')))
+      .pipe(gulp.dest(path.join(config['tmp-directory'], '.')))
 });
 
 gulp.task('package', ['build', 'copy-libs'], function(cb) {
    var rjsConfig = config['requirejs-config'];
    var configTemplate = handlebars.compile(JSON.stringify(rjsConfig));
    var configStr = '(' + configTemplate(config) + ')'
-   var configFile = path.join('.', config['bin-directory'], 'requirejs-config.js');
+   var configFile = path.join('.', config['tmp-directory'], 'requirejs-config.js');
    var rjs = path.normalize('./node_modules/requirejs/bin/r.js');
 
    fs.writeFileSync(configFile, configStr);
@@ -68,5 +69,5 @@ gulp.task('package', ['build', 'copy-libs'], function(cb) {
 });
 
 gulp.task('clean', function(cb) {
-   del([config['out-directory'], config['bin-directory']], cb)
+   del([config['out-directory'], config['tmp-directory']], cb)
 });

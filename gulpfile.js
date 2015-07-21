@@ -1,73 +1,42 @@
-var babel = require("gulp-babel");
-var config = require('./package.json')['gulp'];
-var del = require('del');
-var exec = require('child_process').exec;
-var fs = require('fs');
+'use strict';
+
+var watchify = require('watchify');
+var browserify = require('browserify');
 var gulp = require('gulp');
-var handlebars = require('handlebars');
-var mainBowerFiles = require('main-bower-files');
-var notify = require('gulp-notify');
-var path = require('path');
-var preprocess = require('gulp-preprocess');
-var rjs = require("gulp-rjs");
-var sass = require('gulp-ruby-sass') ;
-var shell = require('gulp-shell');
+var source = require('vinyl-source-stream');
+var buffer = require('vinyl-buffer');
+var gutil = require('gulp-util');
+var sourcemaps = require('gulp-sourcemaps');
+var assign = require('lodash.assign');
 
-gulp.task('default', ['build', 'copy-libs'])
-gulp.task('build', ['build-js', 'build-css'])
+// add custom browserify options here
+var customOpts = {
+  entries: ['./src/index.js'],
+  debug: true,
+  babelify.configure({
+     stage: 0
+  })
+};
+var opts = assign({}, watchify.args, customOpts);
+var b = watchify(browserify(opts));
 
-gulp.task('build-js', function() {
-   return gulp.src(config['babel-src-globs'])
-      .pipe(preprocess(config['preprocessor-config']))
-      .pipe(babel(config['babel-config']))
-      .pipe(gulp.dest(config['tmp-directory']));
-});
+// add transformations here
+// i.e. b.transform(coffeeify);
 
-gulp.task('build-css', function() { 
-   var errCb = function(error) { 
-      return "Error: " + error.message; 
-   }
+gulp.task('js', bundle); // so you can run `gulp js` to build the file
+b.on('update', bundle); // on any dep update, runs the bundler
+b.on('log', gutil.log); // output build logs to terminal
 
-   var sassProcessor = sass(config['sass-config']) ;
-   sassProcessor = sassProcessor.on("error", notify.onError(errCb));
-
-   return gulp.src(config['sass-src-globs']) 
-      .pipe(sassProcessor)  
-      .pipe(gulp.dest(config['out-directory'] + '/css')); 
-});
-
-gulp.task('copy-fonts', function() { 
-   return gulp.src('./bower_components/fontawesome/fonts/**.*') 
-      .pipe(gulp.dest(config['out-directory'] + '/fonts')); 
-});
-
-gulp.task('copy-libs', function() {
-   var regex = /\.js$/
-   var options = {
-      filter: function(name) {
-         return regex.test(String(name).toLowerCase());
-      }
-   };
-   return gulp.src(mainBowerFiles(options))
-      .pipe(gulp.dest(path.join(config['tmp-directory'], '.')))
-});
-
-gulp.task('package', ['build', 'copy-libs'], function(cb) {
-   var rjsConfig = config['requirejs-config'];
-   var configTemplate = handlebars.compile(JSON.stringify(rjsConfig));
-   var configStr = '(' + configTemplate(config) + ')'
-   var configFile = path.join('.', config['tmp-directory'], 'requirejs-config.js');
-   var rjs = path.normalize('./node_modules/requirejs/bin/r.js');
-
-   fs.writeFileSync(configFile, configStr);
-   exec('node ' + rjs + ' -o ' + configFile, function(err, stdout,
-      stderr) {
-      console.log(stdout);
-      console.log(stderr);
-      cb(err);
-   });
-});
-
-gulp.task('clean', function(cb) {
-   del([config['out-directory'], config['tmp-directory']], cb)
-});
+function bundle() {
+  return b.bundle()
+    // log errors if they happen
+    .on('error', gutil.log.bind(gutil, 'Browserify Error'))
+    .pipe(source('bundle.js'))
+    // optional, remove if you don't need to buffer file contents
+    .pipe(buffer())
+    // optional, remove if you dont want sourcemaps
+    .pipe(sourcemaps.init({loadMaps: true})) // loads map from browserify file
+       // Add transformation tasks to the pipeline here.
+    .pipe(sourcemaps.write('./')) // writes .map file
+    .pipe(gulp.dest('./dist'));
+}

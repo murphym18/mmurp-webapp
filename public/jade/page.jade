@@ -1,0 +1,24 @@
+doctype html
+html
+  head
+    meta(charset="utf-8")
+    meta(http-equiv="X-UA-Compatible" content="IE=edge")
+    meta(name="viewport" content="width=device-width,initial-scale=1")
+    link(rel="author", href="/humans.txt")
+    
+    block description
+      meta(name="description", content="Description coming soon.")
+    block title
+      title Coming soon...
+
+    include ./favicons.jade
+
+    style
+      include ../../tmp/sass/index.css
+
+    script
+      include ../../tmp/bundle.js
+
+  body
+    include ./ie8-unsupported.html
+    block content

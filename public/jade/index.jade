@@ -1,21 +1,10 @@
-doctype html
-html
-  head
-    meta(charset="utf-8")
-    meta(http-equiv="X-UA-Compatible" content="IE=edge")
-    meta(name="viewport" content="width=device-width,initial-scale=1")
-    meta(name="description", content=description)
+extends ./page.jade
 
-    title= title
+block description
+  meta(name="description", content=description)
 
-    include ./favicons.jade
+block title
+  title= title
 
-    style
-      include ../../tmp/sass/index.css
-
-    script
-      include ../../tmp/bundle.js
-
-  body
-    include ./ie8-unsupported.html
-    h1= title
+block content
+  h1= title

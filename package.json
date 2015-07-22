@@ -11,6 +11,7 @@
     "gulp-sourcemaps": "^1.5.2",
     "gulp-uglify": "^1.2.0",
     "gulp-util": "^3.0.6",
+    "handlebars": "^3.0.3",
     "jade": "^1.11.0",
     "jadeify": "^4.4.0",
     "vinyl-buffer": "^1.0.0",

@@ -2,6 +2,7 @@ require('./tasks/sass');
 require('./tasks/clean');
 require('./tasks/jade');
 require('./tasks/icons');
+require('./tasks/meta');
 
 var config = require('./config');
 var outdir = config['tmp-directory'];
@@ -39,7 +40,7 @@ var b = browserify(opts) //.exclude('foo');
 // add transformations here
 // i.e. b.transform(coffeeify);
 
-gulp.task('build', ['jade', 'sass', 'browserify', 'icons'], function(cb) {
+gulp.task('build', ['jade', 'sass', 'browserify', 'icons', 'meta'], function(cb) {
    var files = [config['tmp-directory'] + '/index.html', config[
       'tmp-directory'] + '/bundle.js.map'];
    return gulp.src(files)

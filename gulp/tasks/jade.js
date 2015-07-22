@@ -5,22 +5,30 @@ var path = require('path');
 var fs = require('fs');
 var source = require('vinyl-source-stream');
 var vinylBuffer = require('vinyl-buffer');
+var jadeOptions = {
+   pretty: false,
+};
+
+function renderJadeFile(inFile, outFile, locals, cb) {
+   var fn = jade.compileFile(inFile, jadeOptions);
+   var html = fn((locals || {}));
+
+   return bufferStringStream(outFile, html)
+      .pipe(gulp.dest(config['tmp-directory']));;
+}
 
 gulp.task('jade', ['sass', 'browserify'], function (cb) {
-   var indexTemplate = path.resolve(config['pub-directory'], 'jade/index.jade');
-   var jadeOptions = {
-      pretty: false,
+   var inFile = path.resolve(config['pub-directory'], 'jade/404.jade');
+   var fn = jade.compileFile(inFile, jadeOptions);
+   var html = fn({});
+   var data = fs.writeFileSync(config['out-directory'] + '/404.html', html);
 
-   };
-   var templateLocals = {
+   var template = path.resolve(config['pub-directory'], 'jade/index.jade');
+   var locals = {
       title: config['app-name'],
       description: config['app-description']
    };
-   var fn = jade.compileFile(indexTemplate, jadeOptions);
-   var html = fn(templateLocals);
-   var outFile = 'index.html';
-   return bufferStringStream(outFile, html)
-      .pipe(gulp.dest(config['tmp-directory']));
+   return renderJadeFile(template, 'index.html', locals);
 });
 
 function bufferStringStream(filename, string) {

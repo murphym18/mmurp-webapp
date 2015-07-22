@@ -6,7 +6,7 @@ var fs = require('fs');
 var source = require('vinyl-source-stream');
 var vinylBuffer = require('vinyl-buffer');
 
-gulp.task('jade', ['sass', 'build'], function (cb) {
+gulp.task('jade', ['sass', 'babel'], function (cb) {
    var indexTemplate = path.resolve(config['pub-directory'], 'index.jade');
    var jadeOptions = {
       pretty: false,

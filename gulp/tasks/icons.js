@@ -12,7 +12,6 @@ gulp.task('icons', function(cb) {
    var color = colors[i];
 
    var files = path.resolve(config['pub-directory'], 'icons', color) + '/*';
-   console.log(files)
    return gulp.src(files)
       .pipe(gulp.dest(config['out-directory']));
 });

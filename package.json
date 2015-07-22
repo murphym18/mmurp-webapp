@@ -23,12 +23,13 @@
   "main": "./app",
   "gulp": {},
   "dependencies": {
-    "bootstrap-sass": "twbs/bootstrap-sass",
-    "underscore": "^1.8.3",
     "backbone": "^1.2.1",
-    "jquery": "^2.1.4",
+    "backbone.marionette": "~2.4.2",
     "backbone.radio": "~1.0.0",
-    "backbone.marionette": "~2.4.2"
+    "bootstrap-sass": "twbs/bootstrap-sass",
+    "font-awesome": "^4.3.0",
+    "jquery": "^2.1.4",
+    "underscore": "^1.8.3"
   },
   "repository": {
     "type": "git",

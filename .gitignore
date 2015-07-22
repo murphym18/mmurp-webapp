@@ -1,6 +1,6 @@
 /bin/
 /out/
-/dist/
+/tmp/
 /node_modules/
 /bower_components/
 /test/coverage/

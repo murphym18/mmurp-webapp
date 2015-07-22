@@ -1,6 +1,6 @@
 var uglify = require('gulp-uglify');
 var options = {
-   mangle: false,
+   mangle: true,
    output: {
       indent_start: 0, // start indentation on every line (only when `beautify`)
       indent_level: 3, // indentation level (only when `beautify`)
@@ -10,10 +10,10 @@ var options = {
       inline_script: false, // escape "</script"?
       width: 80, // informative maximum line width (for beautified output)
       max_line_len: 32000, // maximum line length (for non-beautified output)
-      beautify: true, // beautify output?
+      beautify: false, // beautify output?
       source_map: null, // output a source map
       bracketize: false, // use brackets every time?
-      comments: true, // output comments?
+      comments: false, // output comments?
       semicolons: true, // use semicolons to separate statements? (otherwise, new
    }
 }

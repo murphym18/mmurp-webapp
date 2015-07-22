@@ -1,7 +1,9 @@
 require('./tasks/sass');
 require('./tasks/clean');
+require('./tasks/jade');
+
 var config = require('./config');
-var outdir = config['out-directory'];
+var outdir = config['tmp-directory'];
 var watchify = require('watchify');
 var browserify = require('browserify');
 var gulp = require('gulp');
@@ -10,8 +12,6 @@ var buffer = require('vinyl-buffer');
 var gutil = require('gulp-util');
 var sourcemaps = require('gulp-sourcemaps');
 var uglify = require('./tasks/uglify');
-
-
 
 // add custom browserify options here
 var opts = {
@@ -33,10 +33,17 @@ var opts = {
    ]
 };
 
-var b = browserify(opts);
+var b = browserify(opts) //.exclude('foo');
 
 // add transformations here
 // i.e. b.transform(coffeeify);
+
+gulp.task('package', ['jade', 'sass', 'build'], function(cb) {
+   var files = [config['tmp-directory'] + '/index.html', config[
+      'tmp-directory'] + '/bundle.js.map'];
+   return gulp.src(files)
+      .pipe(gulp.dest(config['out-directory']));
+});
 
 gulp.task('build', bundle); // so you can run `gulp js` to build the file
 b.on('update', bundle); // on any dep update, runs the bundler

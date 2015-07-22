@@ -1,5 +1,5 @@
 'use strict';
-
+var _ = require('underscore');
 var gulp = require('gulp');
 var sass = require('gulp-sass');
 var config = require('../config');
@@ -11,17 +11,24 @@ var bootstrapFonts = path.resolve(path.dirname(bootstrap), '../fonts');
 var bootstrapPath = path.resolve(path.dirname(bootstrap), '../stylesheets');
 var fontAwesome = path.resolve(__dirname, '../../node_modules/font-awesome');
 
-var options = {
-   includePaths: [
-      bootstrapPath,
-      path.resolve(bootstrapPath, 'bootstrap'),
-      // path.resolve(fontAwesome, 'scss')
-   ],
-   outputStyle: 'compressed'
+function SassOptions() {
+   this.includePaths = Array.prototype.slice.call(arguments);
+   this.outputStyle = 'compressed';
 };
 
-gulp.task('sass', ['fonts'], function (cb) {
-   return gulp.src([path.resolve(pubdir, '**/*.sass')])
+gulp.task('sass', ['sass-bootstrap', 'sass-font-awesome']);
+
+gulp.task('sass-bootstrap', ['fonts'], function (cb) {
+   var path2 = path.resolve(bootstrapPath, 'bootstrap')
+   var options = new SassOptions(bootstrapPath, path2);
+   return gulp.src([path.resolve(pubdir, 'sass/app-bootstrap.sass')])
+      .pipe(sass(options))
+      .pipe(gulp.dest(tmpdir), cb);
+});
+
+gulp.task('sass-font-awesome', ['fonts'], function (cb) {
+   var options = new SassOptions(path.resolve(fontAwesome, 'scss'));
+   return gulp.src([path.resolve(pubdir, 'sass/app-font-awesome.sass')])
       .pipe(sass(options))
       .pipe(gulp.dest(tmpdir), cb);
 });

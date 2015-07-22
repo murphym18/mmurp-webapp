@@ -5,6 +5,7 @@ module.exports = {
   "out-directory": path.resolve(__dirname, "../out"),
   "pub-directory": path.resolve(__dirname, "../public"),
   "app-name": "mmurp.co",
+  "app-description": "Coming soon...",
   "babel-src-globs": [
     "app/**/*.js"
   ],

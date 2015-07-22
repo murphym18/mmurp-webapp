@@ -4,16 +4,18 @@ html
     meta(charset="utf-8")
     meta(http-equiv="X-UA-Compatible" content="IE=edge")
     meta(name="viewport" content="width=device-width,initial-scale=1")
+    meta(name="description", content=description)
 
     title= title
 
     include ./favicons.jade
 
     style
-      include ../tmp/styles/index.css
+      include ../../tmp/sass/index.css
 
     script
-      include ../tmp/bundle.js
+      include ../../tmp/bundle.js
 
   body
+    include ./ie8-unsupported.html
     h1= title

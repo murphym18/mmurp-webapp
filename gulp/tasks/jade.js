@@ -1,44 +1,32 @@
 var config = require('../config');
-var jade = require('jade');
+var jade = require('gulp-jade');
+var dataGulp = require('gulp-data');
 var gulp = require('gulp');
 var path = require('path');
 var fs = require('fs');
 var source = require('vinyl-source-stream');
 var vinylBuffer = require('vinyl-buffer');
+
+var jadeFiles = [
+   path.resolve(config['pub-directory'], 'jade/index.jade'),
+   path.resolve(config['pub-directory'], 'jade/404.jade')
+];
+
 var jadeOptions = {
-   pretty: false,
+   pretty: false
 };
 
-function renderJadeFile(inFile, outFile, locals, cb) {
-   var fn = jade.compileFile(inFile, jadeOptions);
-   var html = fn((locals || {}));
-
-   return bufferStringStream(outFile, html)
-      .pipe(gulp.dest(config['tmp-directory']));;
-}
-
-gulp.task('jade', ['sass', 'browserify'], function (cb) {
-   var inFile = path.resolve(config['pub-directory'], 'jade/404.jade');
-   var fn = jade.compileFile(inFile, jadeOptions);
-   var html = fn({});
-   var data = fs.writeFileSync(config['out-directory'] + '/404.html', html);
-
-   var template = path.resolve(config['pub-directory'], 'jade/index.jade');
-   var locals = {
+function getLocals(file, cb) {
+   var result = {
       title: config['app-name'],
       description: config['app-description']
    };
-   return renderJadeFile(template, 'index.html', locals);
-});
-
-function bufferStringStream(filename, string) {
-   var stream = source(filename);
-   stream.write(string);
-
-   process.nextTick(function() {
-      stream.end();
-   });
-
-   return stream
-      .pipe(vinylBuffer())
+   cb(undefined, result);
 }
+
+gulp.task('jade', ['sass', 'browserify'], function (cb) {
+   return gulp.src(jadeFiles)
+      .pipe(dataGulp(getLocals))
+      .pipe(jade(jadeOptions))
+      .pipe(gulp.dest(config['out-directory']));
+});

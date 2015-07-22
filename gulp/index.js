@@ -22,7 +22,7 @@ var gutil = require('gulp-util');
 // add transformations here
 // i.e. b.transform(coffeeify);
 
-gulp.task('build', ['jade', 'sass', 'browserify', 'icons', 'meta'], function(cb) {
+gulp.task('build', ['jade', 'sass', 'browserify', 'meta'], function(cb) {
    var files = [config['tmp-directory'] + '/index.html', config[
       'tmp-directory'] + '/bundle.js.map'];
    return gulp.src(files)

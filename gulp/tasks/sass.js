@@ -18,7 +18,7 @@ function SassOptions() {
 
 gulp.task('sass', ['sass-bootstrap', 'sass-font-awesome']);
 
-gulp.task('sass-bootstrap', ['fonts'], function (cb) {
+gulp.task('sass-bootstrap', ['sass-fonts'], function (cb) {
    var path2 = path.resolve(bootstrapPath, 'bootstrap')
    var options = new SassOptions(bootstrapPath, path2);
    return gulp.src([path.resolve(pubdir, 'sass/app-bootstrap.sass')])
@@ -26,14 +26,14 @@ gulp.task('sass-bootstrap', ['fonts'], function (cb) {
       .pipe(gulp.dest(tmpdir), cb);
 });
 
-gulp.task('sass-font-awesome', ['fonts'], function (cb) {
+gulp.task('sass-font-awesome', ['sass-fonts'], function (cb) {
    var options = new SassOptions(path.resolve(fontAwesome, 'scss'));
    return gulp.src([path.resolve(pubdir, 'sass/app-font-awesome.sass')])
       .pipe(sass(options))
       .pipe(gulp.dest(tmpdir), cb);
 });
 
-gulp.task('fonts', function (cb) {
+gulp.task('sass-fonts', function (cb) {
    return gulp.src([bootstrapFonts + '/**/*', fontAwesome + '/fonts/**/*'])
       .pipe(gulp.dest(config['out-directory'] + '/fonts'));
 });

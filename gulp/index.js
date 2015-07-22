@@ -38,14 +38,14 @@ var b = browserify(opts) //.exclude('foo');
 // add transformations here
 // i.e. b.transform(coffeeify);
 
-gulp.task('build', ['jade', 'sass', 'babel'], function(cb) {
+gulp.task('build', ['jade', 'sass', 'browserify'], function(cb) {
    var files = [config['tmp-directory'] + '/index.html', config[
       'tmp-directory'] + '/bundle.js.map'];
    return gulp.src(files)
       .pipe(gulp.dest(config['out-directory']));
 });
 
-gulp.task('babel', bundle); // so you can run `gulp js` to build the file
+gulp.task('browserify', bundle); // so you can run `gulp js` to build the file
 b.on('update', bundle); // on any dep update, runs the bundler
 b.on('log', gutil.log); // output build logs to terminal
 

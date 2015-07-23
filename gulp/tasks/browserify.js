@@ -7,11 +7,10 @@ var sourcemaps = require('gulp-sourcemaps');
 var uglify = require('./uglify');
 var config = require('../config');
 var outdir = config['tmp-directory'];
-// add custom browserify options here
+var babelify = require('babelify');
+
 var opts = {
-   "entries": [
-      "./app/index.js"
-   ],
+   debug: true,
    "transform": [
       [
          "jadeify", {
@@ -28,7 +27,12 @@ var opts = {
    cache: {},
    packageCache: {}
 };
+var b = browserify("./app/index.js", opts); //.exclude('foo');
 
+b.on('update', bundle); // on any dep update, runs the bundler
+b.on('log', gutil.log); // output build logs to terminal
+
+gulp.task('browserify', bundle);
 function bundle() {
    return b.bundle()
       // log errors if they happen
@@ -36,20 +40,14 @@ function bundle() {
       .pipe(source('bundle.js'))
       // optional, remove if you don't need to buffer file contents
       .pipe(buffer())
-      .pipe(uglify())
+
       // optional, remove if you dont want sourcemaps
       .pipe(sourcemaps.init({
          loadMaps: true
       })) // loads map from browserify file
+      .pipe(uglify())
       // Add transformation tasks to the pipeline here.
 
-   .pipe(sourcemaps.write('./')) // writes .map file
+   .pipe(sourcemaps.write()) // writes .map file
       .pipe(gulp.dest(outdir));
 }
-
-var b = browserify(opts) //.exclude('foo');
-
-b.on('update', bundle); // on any dep update, runs the bundler
-b.on('log', gutil.log); // output build logs to terminal
-
-gulp.task('browserify', bundle);

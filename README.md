@@ -2,6 +2,6 @@
 
 usage:
 
+    git clone git@github.com:murphym18/mmurp-webapp.git
     npm install
-    bower install
-    gulp
+    npm start

@@ -1,12 +1,17 @@
-import "./common";
-import "bootstrap-sass";
+import io from 'socket.io-client';
+global.io = io;
+import "bootstrap";
 import Backbone from 'backbone';
 import Router from "./router";
+import $ from 'jquery';
 
 
 console.log('Router = ', Router);
+console.log('zz')
 
 export default Router;
 console.log('hello');
-console.log('Backbone = ', Backbone);
+
+
+
 // throw new Error();

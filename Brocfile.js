@@ -2,29 +2,37 @@ var mergeTrees = require('broccoli-merge-trees');
 var babel = require('broccoli-babel-transpiler');
 var browserify = require('broccolify');
 var shim = require('browserify-shim');
-var concat = require('broccoli-concat');
+var renderTemplates = require("broccoli-render-template");
+var consolidate = require('consolidate');
 var uglifyJavaScript = require('broccoli-uglify-js');
+var changeExtension = require('broccoli-change-extension');
 var funnel = require('broccoli-funnel');
-var env = require('broccoli-env').getEnv();
 var fs = require('fs');
 var path = require('path');
-
+var Handlebars = require('handlebars');
+var env = require('broccoli-env').getEnv();
+var compileSass = require('broccoli-sass');
 var dist = [];
-var commonModules = ['jquery', 'bootstrap-sass'];
-// var libsArray = commonModules.map(function(f){
-//    return path.relative(__dirname, require.resolve(f));
-// });
-//
-// var common = concat('.', {
-//   inputFiles: libsArray,
-//   outputFile: '/common.js',
-//   separator: '\n', // (optional, defaults to \n)
-//   wrapInEval: false, // (optional, defaults to false)
-//   wrapInFunction: false, // (optional, defaults to true)
-//   header: (require("babel").buildExternalHelpers())
-// });
-//
-// common = uglifyJavaScript(common)
+
+var html = renderTemplates('public/jade', {
+   live_reload: env !== 'production'
+});
+dist.push(funnel(html, {
+   exclude: ['ie8-unsupported.html', 'favicons.html', 'page.html']
+}));
+
+Handlebars.registerHelper('include_js', function(lib, options) {
+   return fs.readFileSync(require.resolve(lib));
+});
+
+var libs = renderTemplates('public/libs', {
+   babel_ext: require("babel").buildExternalHelpers(),
+});
+libs = changeExtension(libs, {
+   inputExtension: '.html',
+   outputExtension: ''
+});
+dist.push(libs);
 
 if (env !== 'production') {
    var liveReload = babel('bin', {
@@ -52,7 +60,6 @@ var app = babel('app', {
 app = browserify(app, {
    entries: ['./index'],
    outputFile: 'bundle.js',
-   transform: [shim],
    browserify: {
       debug: env !== 'production'
    }
@@ -62,5 +69,24 @@ if (env === 'production') {
    app = uglifyJavaScript(app);
 }
 dist.push(app);
-dist.push(funnel('out'));
-module.exports = mergeTrees(dist); //mergeTrees([app, libs, css, html, meta]);
+
+var sassPath = 'node_modules/bootstrap-sass/assets/stylesheets';
+var bootstrapCss = compileSass(['public/sass', sassPath, (sassPath + '/bootstrap')], '/app-bootstrap.sass', '/app-bootstrap.css');
+dist.push(bootstrapCss);
+dist.push(funnel('node_modules/bootstrap-sass/assets', {
+   srcDir: 'fonts',
+   destDir: 'fonts'
+}));
+
+var fontAwesomePath = 'node_modules/font-awesome';
+var fontAwesomeCss = compileSass(['public/sass', (fontAwesomePath + '/scss')], '/app-font-awesome.sass', '/app-font-awesome.css');
+dist.push(fontAwesomeCss);
+dist.push(funnel(fontAwesomePath, {
+   srcDir: 'fonts',
+   destDir: 'fonts'
+}));
+dist.push(funnel('public/meta/favicons', {
+   srcDir: ['/green', '/gray', '/orange', '/blue', '/darkblue'][Math.floor(Math.random()*5)],
+   destDir: '/'
+}))
+module.exports = mergeTrees(dist, {overwrite: true}); //mergeTrees([app, libs, css, html, meta]);

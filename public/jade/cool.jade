@@ -1,0 +1,24 @@
+extends ./page.jade
+
+block description
+  meta(name="description", content=description)
+
+block title
+  title mmurp.co
+
+block content
+  main.container
+    h1 hi
+    .row
+      .panel.panel-default.bg-success
+        .panel-heading
+           h1 cool!
+        .panel-body
+           p hello
+
+    .row
+      .well
+        p
+          i.fa.fa-home.fa-2x(aria-hidden="true")
+          span.glyphicon.glyphicon-search(aria-hidden="true")
+  

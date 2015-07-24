@@ -12,13 +12,15 @@ html
       title Coming soon...
 
     include ./favicons.jade
-    
-    style
-      include ../../tmp/app-bootstrap.css
-    style
-      include ../../tmp/app-font-awesome.css
-    script
-      include ../../tmp/bundle.js
+
+    link(rel="stylesheet", type="text/css", href="app-font-awesome.css")
+    link(rel="stylesheet", type="text/css", href="app-bootstrap.css")
+
+    script(src="common.js")
+    script(src="bundle.js")
+    if live_reload
+      script(src="live-reload.js")
+
   body
     include ./ie8-unsupported.html
     block content

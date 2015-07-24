@@ -61,7 +61,7 @@ function getBuilder() {
 
 function getOptions(builder) {
    var options = {};
-   options.port = 80;
+   options.port = 8080;
    options.host = "localhost";
    return options;
 }

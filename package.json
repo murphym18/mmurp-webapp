@@ -32,6 +32,7 @@
     "watchify": "^3.3.0"
   },
   "scripts": {
+    "prestart": "chrome http://localhost:8080",
     "start": "node bin/dev-server.js",
     "browserify": "browserify app/index.js -t [ babelify --stage=0 ] > tmp/tmp-bundle.js && uglifyjs --mangle --screw-ie8 --compress -o tmp/bundle.js -- tmp/tmp-bundle.js",
     "clean": "rimraf out tmp",

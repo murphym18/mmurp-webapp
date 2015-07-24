@@ -9,6 +9,7 @@ var env = require('broccoli-env').getEnv();
 var fs = require('fs');
 var path = require('path');
 
+var dist = [];
 var commonModules = ['jquery', 'bootstrap-sass'];
 // var libsArray = commonModules.map(function(f){
 //    return path.relative(__dirname, require.resolve(f));
@@ -25,6 +26,22 @@ var commonModules = ['jquery', 'bootstrap-sass'];
 //
 // common = uglifyJavaScript(common)
 
+if (env !== 'production') {
+   var liveReload = babel('bin', {
+      stage: 0,
+      modules: 'common',
+      sourceMaps: 'inline',
+      externalHelpers: true
+   });
+   liveReload = browserify(liveReload, {
+      entries: ['./live-reload-client.js'],
+      outputFile: 'live-reload.js',
+      browserify: {
+         debug: true
+      }
+   });
+   dist.push(liveReload);
+}
 var app = babel('app', {
    stage: 0,
    modules: 'common',
@@ -44,6 +61,6 @@ app = browserify(app, {
 if (env === 'production') {
    app = uglifyJavaScript(app);
 }
-
-var out = funnel('out');
-module.exports = mergeTrees([out, app]); //mergeTrees([app, libs, css, html, meta]);
+dist.push(app);
+dist.push(funnel('out'));
+module.exports = mergeTrees(dist); //mergeTrees([app, libs, css, html, meta]);

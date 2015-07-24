@@ -1,5 +1,3 @@
-import io from 'socket.io-client';
-global.io = io;
 import "bootstrap";
 import Backbone from 'backbone';
 import Router from "./router";

@@ -1,0 +1,103 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="author" href="/humans.txt"><meta name="description" content=""><title>mmurp-platformer</title><link rel="apple-touch-icon" sizes="57x57" href="/apple-icon-57x57.png"><link rel="apple-touch-icon" sizes="60x60" href="/apple-icon-60x60.png"><link rel="apple-touch-icon" sizes="72x72" href="/apple-icon-72x72.png"><link rel="apple-touch-icon" sizes="76x76" href="/apple-icon-76x76.png"><link rel="apple-touch-icon" sizes="114x114" href="/apple-icon-114x114.png"><link rel="apple-touch-icon" sizes="120x120" href="/apple-icon-120x120.png"><link rel="apple-touch-icon" sizes="144x144" href="/apple-icon-144x144.png"><link rel="apple-touch-icon" sizes="152x152" href="/apple-icon-152x152.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-icon-180x180.png"><link rel="icon" type="image/png" sizes="192x192" href="/android-icon-192x192.png"><link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png"><link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png"><link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="manifest" href="/manifest.json"><meta name="msapplication-TileColor" content="#ffffff"><meta name="msapplication-TileImage" content="/ms-icon-144x144.png"><meta name="theme-color" content="#ffffff"><link rel="stylesheet" type="text/css" href="app-font-awesome.css"><link rel="stylesheet" type="text/css" href="app-bootstrap.css"><script src="common.js"></script><script src="bundle.js"></script></head><body>
+<!--[if lt IE 8]>
+    <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+<![endif]-->
+
+<div class="container">
+
+  <div class="row"><div class="col-md-12"><canvas id="canvas" oncontextmenu="event.preventDefault()" height="540" width="960" class="center-block game"><div role="alert" class="alert alert-danger"><strong>Oh snap!</strong>
+Your browser can't run mmurp-platformer. Try using the latest desktop version
+of <a href="https://www.mozilla.org/firefox/" class="alert-link">Firefox</a> or
+<a href="https://www.google.com/chrome/" class="alert-link">Chrome</a>.
+</div></canvas></div></div>  <div class="row"><div class="col-md-12">
+    <textarea id="map-editor" class="form-control" rows="10" style='font-family: "Menlo, Monaco, Consolas, "Courier New", monospace"'>####
+
+     P
+
+    ###
+      ###
+        ####</textarea>
+  </div></div><div class="row"><div class="col-md-12 text-right"><input class="btn btn-default" onclick="SendMessage('WorldLoader', 'Refresh'); this.blur();" type="button" value="Play Level"></div></div></div><script type='text/javascript'>
+  // connect to canvas
+  var Module = {
+    TOTAL_MEMORY: 268435456,
+    filePackagePrefixURL: "Release/",
+    memoryInitializerPrefixURL: "Release/",
+    preRun: [],
+    postRun: [],
+    print: (function() {
+      return function(text) {
+        console.log (text);
+      };
+    })(),
+    printErr: function(text) {
+      console.error (text);
+    },
+    canvas: document.getElementById('canvas'),
+    progress: null,
+    setStatus: function(text) {
+      if (this.progress == null) 
+      {
+        if (typeof UnityProgress != 'function')
+          return;
+        this.progress = new UnityProgress (canvas);
+      }
+      if (!Module.setStatus.last) Module.setStatus.last = { time: Date.now(), text: '' };
+      if (text === Module.setStatus.text) return;
+      this.progress.SetMessage (text);
+      var m = text.match(/([^(]+)\((\d+(\.\d+)?)\/(\d+)\)/);
+      if (m)
+        this.progress.SetProgress (parseInt(m[2])/parseInt(m[4]));
+      if (text === "") 
+        this.progress.Clear()
+    },
+    totalDependencies: 0,
+    monitorRunDependencies: function(left) {
+      this.totalDependencies = Math.max(this.totalDependencies, left);
+      Module.setStatus(left ? 'Preparing... (' + (this.totalDependencies-left) + '/' + this.totalDependencies + ')' : 'All downloads complete.');
+    }
+  };
+  Module.setStatus('Downloading (0.0/1)');
+</script>
+<script src="Release/UnityConfig.js"></script>
+<script src="Release/fileloader.js"></script>
+<script>if (!(!Math.fround)) {
+  var script = document.createElement('script');
+  script.src = "Release/test_webgl.js";
+  document.body.appendChild(script);
+} else {
+  var codeXHR = new XMLHttpRequest();
+  codeXHR.open('GET', 'Release/test_webgl.js', true);
+  codeXHR.onload = function() {
+    var code = codeXHR.responseText;
+    if (!Math.fround) { 
+try {
+  console.log('optimizing out Math.fround calls');
+  var m = /var ([^=]+)=global\.Math\.fround;/.exec(code);
+  var minified = m[1];
+  if (!minified) throw 'fail';
+  var startAsm = code.indexOf('// EMSCRIPTEN_START_FUNCS');
+  var endAsm = code.indexOf('// EMSCRIPTEN_END_FUNCS');
+  var asm = code.substring(startAsm, endAsm);
+  do {
+    var moar = false; // we need to re-do, as x(x( will not be fixed
+    asm = asm.replace(new RegExp('[^a-zA-Z0-9\\$\\_]' + minified + '\\(', 'g'), function(s) { moar = true; return s[0] + '(' });
+  } while (moar);
+  code = code.substring(0, startAsm) + asm + code.substring(endAsm);
+  code = code.replace("'use asm'", "'almost asm'");
+} catch(e) { console.log('failed to optimize out Math.fround calls ' + e) }
+ }
+
+    var blob = new Blob([code], { type: 'text/javascript' });
+    codeXHR = null;
+    var src = URL.createObjectURL(blob);
+    var script = document.createElement('script');
+    script.src = URL.createObjectURL(blob);
+    script.onload = function() {
+      URL.revokeObjectURL(script.src);
+    };
+    document.body.appendChild(script);
+  };
+  codeXHR.send(null);
+}
+</script></body></html>

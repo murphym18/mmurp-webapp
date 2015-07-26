@@ -19,7 +19,8 @@ html
     script(src="common.js")
     script(src="bundle.js")
     if live_reload
-      script(src="live-reload.js")
+        script(src="live-reload.js")
+    block scripts
 
   body
     include ./ie8-unsupported.html

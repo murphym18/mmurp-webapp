@@ -1,0 +1,26 @@
+extends ./page.jade
+
+- var w = '%UNITY_WIDTH%px'
+- var h = '%UNITY_HEIGHT%px'
+
+block description
+  meta(name="description", content="%UNITY_CUSTOM_DESCRIPTION%")
+
+block title
+  title %UNITY_WEB_NAME%
+
+append scripts
+  script(src="loading-screen.js")
+
+block content
+  .container
+    .row
+      .col-md-12
+        canvas#canvas.center-block.game(oncontextmenu="event.preventDefault()" height=540 width=960)
+          .alert.alert-danger(role="alert").
+            #[strong Oh snap!]
+            Your browser can't run %UNITY_WEB_NAME%. Try using the latest desktop version
+            of #[a.alert-link(href='https://www.mozilla.org/firefox/') Firefox] or
+            #[a.alert-link(href='https://www.google.com/chrome/') Chrome].
+
+  | %UNITY_WEBGL_LOADER_GLUE%

@@ -10,7 +10,8 @@ var funnel = require('broccoli-funnel');
 var fs = require('fs');
 var path = require('path');
 var Handlebars = require('handlebars');
-var env = require('broccoli-env').getEnv();
+var _ = require('underscore');
+var env = _.contains(process.argv, "production") ? 'production' : "development";
 var compileSass = require('broccoli-sass');
 var dist = [];
 

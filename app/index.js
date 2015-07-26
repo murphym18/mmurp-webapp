@@ -5,7 +5,7 @@ import $ from 'jquery';
 
 
 console.log('Router = ', Router);
-console.log('zz!')
+console.log('z')
 
 export default Router;
 console.log('hello');

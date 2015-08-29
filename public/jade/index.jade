@@ -1,14 +1,45 @@
 extends ./page.jade
 
+//- var w = '%UNITY_WIDTH%px'
+//- var h = '%UNITY_HEIGHT%px'
+
 block description
-  meta(name="description", content=description)
+  meta(name="description", content="2D platform game")
 
 block title
   title mmurp.co
 
+//append scripts
+//  script(src="loading-screen.js")
+//        canvas#canvas.center-block.game.box-shadow(oncontextmenu="event.preventDefault()" height=h width=w)
+//          .alert.alert-danger(role="alert").
+//            #[strong Oh snap!]
+//            Your browser can't run %UNITY_WEB_NAME%. Try using the latest desktop version
+//            of #[a.alert-link(href='https://www.mozilla.org/firefox/') Firefox] or
+//            #[a.alert-link(href='https://www.google.com/chrome/') Chrome].
+
 block content
-  h1 mmurp.co
-  p
-    i.fa.fa-camera-retro.fa-5x(aria-hidden="true")
-    span.glyphicon.glyphicon-search(aria-hidden="true")
-  
+
+  .container
+    .row
+      .col-md-12
+        iframe.center-block.game.box-shadow(onclick="window.frames[0].focus()" frameborder="0" src="canvas-frame.html" width="960" height="540" scrolling="no")
+
+    .row
+      .col-md-12
+        .panel.panel-default
+          .panel-body
+            form#map-editor-view
+              .form-group
+                textarea#map-editor.form-control.game-map-text(rows="10" cols="4000" maxlength="4000" wrap="soft" placeholder="Level Map" spellcheck="false" autocomplete="off")
+                  | ###
+                  | #
+                  | # P
+                  | ##
+                  | ### ####
+                  | #
+                  | ##### ####
+                button#play-level.btn.btn-default.pull-right.play-button(type="button") Play Level
+
+//append end_scripts
+//  |

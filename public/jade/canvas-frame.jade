@@ -1,0 +1,15 @@
+- var w = '960px'
+- var h = '540px'
+
+doctype html
+html
+  head
+  body(style="margin:0; padding: 0;")
+    canvas#canvas(oncontextmenu="event.preventDefault()" height=h width=w)
+      .alert.alert-danger(role="alert").
+        #[strong Oh snap!]
+        Your browser can't run %UNITY_WEB_NAME%. Try using the latest desktop version
+        of #[a.alert-link(href='https://www.mozilla.org/firefox/') Firefox] or
+        #[a.alert-link(href='https://www.google.com/chrome/') Chrome].
+
+    | %UNITY_WEBGL_LOADER_GLUE%

@@ -17,11 +17,15 @@ html
     link(rel="stylesheet", type="text/css", href="app-bootstrap.css")
 
     script(src="common.js")
-    script(src="bundle.js")
+
     if live_reload
         script(src="live-reload.js")
     block scripts
 
   body
     include ./ie8-unsupported.html
+
     block content
+
+    block end_scripts
+      script(src="bundle.js")

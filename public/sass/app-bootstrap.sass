@@ -3,3 +3,13 @@ $grid-columns: 12
 $grid-gutter-width: 30px
 $container-desktop: 960px + $grid-gutter-width
 @import "bootstrap"
+
+.game
+   margin-bottom: $line-height-computed
+   @include box-shadow(0 1px 1px rgba(0,0,0,.05))
+
+textarea.game-map-text
+   font-family: $font-family-monospace
+   margin-bottom: $line-height-computed/2
+   overflow: scroll
+   white-space: pre
